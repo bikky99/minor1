@@ -1,0 +1,97 @@
+<%- include('./include/header') %>
+
+<!-- <div class="container py-md-5 container--narrow">
+    <div class="d-flex justify-content-between">
+      <h2><%= post.title %></h2>
+      <span class="pt-2">
+        <a href="#" class="text-primary mr-2" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit"></i></a>
+        <form class="delete-post-form d-inline" action="#" method="POST">
+          <button class="delete-post-button text-danger" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash"></i></button>
+        </form>
+      </span>
+    </div>
+      
+    <p class="text-muted small mb-4">
+      <a href="#"><img class="avatar-tiny" src="<%= post.author.avatar%>"></a>
+      Posted by <a href="#"><%=post.author.username%></a> on 
+      <%= post.createdDate.getMonth() +1%>/<%= post.createdDate.getDate() %>/<%= post.createdDate.getFullYear() %>
+    </p>
+
+    <div class="body-content">
+        <%= post.body %>
+    </div>
+
+  </div> -->
+ <%- include('include/flash')%>
+<div class="card">
+  <div class="card-header d-flex justify-content-between">
+    <h5><%= post.title %></h5>
+    <% if (post.isVisitorOwner) {%>
+      <span class="pt-2">
+        <a href="/post/<%= post._id%>/edit" class="text-primary mr-2" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit"></i></a>
+        <form class="delete-post-form d-inline" action="/post/<%= post._id%>/delete" method="POST">
+          <button class="delete-post-button text-danger" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash"></i></button>
+        </form>
+      </span>
+    <% } %>
+  </div>
+  <div class="card-body">
+    <!-- <div class="d-flex justify-content-between"> -->
+    <div class="media">
+      <button id="vote-query" class="btn vote-field mr-3">
+        <i class="fa fa-arrow-up"></i>
+        <span class="vote-count">0</span>
+      </button>
+      <div class="media-body">
+        <p><%= post.body %></p>
+        <p class="text-muted">
+          <a href="#"><img class="avatar-tiny" src="<%= post.author.avatar%>"></a>
+          <a href="#"><%=post.author.username%></a> - <%=
+          post.createdDate.getMonth() +1%>/<%= post.createdDate.getDate() %>/<%=
+          post.createdDate.getFullYear() %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h5>Answers</h5>
+  </div>
+  <div class="card-body">
+    <div class="media">
+      <button id="vote-answer" class="btn vote-field mr-3">
+        <i class="fa fa-arrow-up"></i>
+        <span class="vote-count">0</span>
+      </button>
+      <div class="media-body">
+        <p>Answer Body</p>
+        <p class="text-muted">
+          <a href="#"><img class="avatar-tiny" src="<%= post.author.avatar%>"></a>
+          <a href="#"><%=post.author.username%></a> on <%=
+          post.createdDate.getMonth() +1%>/<%= post.createdDate.getDate() %>/<%=
+          post.createdDate.getFullYear() %>
+        </p>
+      </div>
+    </div>
+    <!-- Repeat the above code for multiple answers -->
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h5>Add an Answer</h5>
+  </div>
+  <div class="card-body">
+    <form>
+      <div class="form-group">
+        <textarea class="form-control" id="answer-body" rows="3"></textarea>
+      </div>
+      <!-- Answer form fields -->
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</div>
+
+<%- include('./include/footer') %>
