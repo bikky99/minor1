@@ -22,17 +22,35 @@
     </div>
 
   </div> -->
- <%- include('include/flash')%>
+<%- include('include/flash')%>
 <div class="card">
   <div class="card-header d-flex justify-content-between">
     <h5><%= post.title %></h5>
     <% if (post.isVisitorOwner) {%>
-      <span class="pt-2">
-        <a href="/post/<%= post._id%>/edit" class="text-primary mr-2" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit"></i></a>
-        <form class="delete-post-form d-inline" action="/post/<%= post._id%>/delete" method="POST">
-          <button class="delete-post-button text-danger" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash"></i></button>
-        </form>
-      </span>
+    <span class="pt-2">
+      <a
+        href="/post/<%= post._id%>/edit"
+        class="text-primary mr-2"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="Edit"
+        ><i class="fas fa-edit"></i
+      ></a>
+      <form
+        class="delete-post-form d-inline"
+        action="/post/<%= post._id%>/delete"
+        method="POST"
+      >
+        <button
+          class="delete-post-button text-danger"
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Delete"
+        >
+          <i class="fas fa-trash"></i>
+        </button>
+      </form>
+    </span>
     <% } %>
   </div>
   <div class="card-body">
@@ -45,10 +63,14 @@
       <div class="media-body">
         <p><%= post.body %></p>
         <p class="text-muted">
-          <a href="#"><img class="avatar-tiny" src="<%= post.author.avatar%>"></a>
-          <a href="#"><%=post.author.username%></a> - <%=
-          post.createdDate.getMonth() +1%>/<%= post.createdDate.getDate() %>/<%=
-          post.createdDate.getFullYear() %>
+          <a href="/profile/<%= post.author.username%>"
+            ><img class="avatar-tiny" src="<%= post.author.avatar%>"
+          /></a>
+          <a href="/profile/<%= post.author.username%>"
+            ><%=post.author.username%></a
+          >
+          - <%= post.createdDate.getMonth() +1%>/<%= post.createdDate.getDate()
+          %>/<%= post.createdDate.getFullYear() %>
         </p>
       </div>
     </div>
@@ -68,7 +90,9 @@
       <div class="media-body">
         <p>Answer Body</p>
         <p class="text-muted">
-          <a href="#"><img class="avatar-tiny" src="<%= post.author.avatar%>"></a>
+          <a href="#"
+            ><img class="avatar-tiny" src="<%= post.author.avatar%>"
+          /></a>
           <a href="#"><%=post.author.username%></a> on <%=
           post.createdDate.getMonth() +1%>/<%= post.createdDate.getDate() %>/<%=
           post.createdDate.getFullYear() %>

@@ -1,5 +1,6 @@
 
 const postsCollection = require('../db').db().collection("posts");
+const followsCollection = require('../db').db().collection("follows");
 const ObjectId = require('mongodb').ObjectId;
 const User = require('./User');
 
@@ -89,7 +90,7 @@ Post.prototype.actuallyUpdate = function () {
   });
 }
 
-Post.reuseablePostQuery = function (uniqueOperations, visitorId) {
+Post.reuseablePostQuery = function (uniqueOperations, visitorId, finalOperations=[]) {
   return new Promise(async function (resolve, reject) {
     let aggOperations = uniqueOperations.concat([
       {$lookup: {from: "users", localField: "author", foreignField: "_id", as: "authorDocument"}},
@@ -102,13 +103,14 @@ Post.reuseablePostQuery = function (uniqueOperations, visitorId) {
         authorId: "$author",
         author: {$arrayElemAt: ["$authorDocument", 0]},
       }}
-    ])
+    ]).concat(finalOperations);
 
     let posts = await postsCollection.aggregate(aggOperations).toArray();
 
     // clean up author property in each post object
     posts = posts.map(function (post) {
       post.isVisitorOwner = post.authorId.equals(visitorId);
+      post.authorId = undefined;
       post.author = {
         username: post.author.username,
         avatar: new User(post.author, true).avatar
@@ -169,6 +171,41 @@ Post.delete = function (postIdToDelete, currentUserId) {
   });
 }
 
+Post.search = function (searchTerm) {
+  return new Promise(async (resolve, reject) => {
+    if (typeof(searchTerm) == "string") {
+      let posts = await Post.reuseablePostQuery([
+        {$match: {$text: {$search: searchTerm}}},
+      ], null, [
+        {$sort: {score: {$meta: "textScore"}}}
+        ]);
+      resolve(posts);
+    } else {
+      reject();
+    }
+  });
+}
+
+Post.countPostsByAuthor = function (id) {
+  return new Promise(async (resolve, reject) => {
+    let postCount = await postsCollection.countDocuments({author: id});
+    resolve(postCount);
+  });
+}
+
+Post.getFeed = async function (id) {
+  // create an array of the user ids that the current user follows
+  let followedUsers = await followsCollection.find({authorId: new ObjectId(id)}).toArray();
+  followedUsers = followedUsers.map(function (followDoc) {
+    return followDoc.followedId;
+  });
+
+  // look for posts where the author is in the above array of followed users
+  return Post.reuseablePostQuery([
+    {$match: {author: {$in: followedUsers}}},
+    {$sort: {createdDate: -1}}
+  ]);
+}
 
 module.exports = Post;
 
