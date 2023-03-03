@@ -3,6 +3,7 @@ const postsCollection = require('../db').db().collection("posts");
 const followsCollection = require('../db').db().collection("follows");
 const ObjectId = require('mongodb').ObjectId;
 const User = require('./User');
+const responseCollection = require('../db').db().collection("response");
 
 let Post = function (data, userId, requestedPostId) {
   this.data = data;
@@ -130,11 +131,9 @@ Post.findSingleById = function (id, visitorId) {
     }
 
     let posts = await Post.reuseablePostQuery([
-      {$match: {_id: new ObjectId(id)}
-    }], visitorId);
-
-    
-
+      {$match: {_id: new ObjectId(id)}},
+    ]
+      , visitorId);
     if (posts.length) {
       posts = posts[0];
       console.log(posts);
@@ -147,6 +146,35 @@ Post.findSingleById = function (id, visitorId) {
     }
   });
 }
+
+// Post.findAllById = function(id, visitorId) {
+//   return new Promise( async function(resolve, reject) {
+//     let posts = await Post.reuseablePostQuery(
+//       [{ $match: { _id: new ObjectId(id) } }],
+//       visitorId
+//     );
+//     if (posts.length) {
+//       posts = posts[0];
+//       console.log(posts);
+//       // posts.isVisitorOwner = posts.author.equals(visitorId);
+//       posts.star = posts.star ? post.star : 0;
+//       posts.weight = posts.weight ? post.weight : 0;
+//       resolve(posts);
+//     } else {
+//       reject();
+//     }
+//   }
+// )}
+
+
+
+// Post.findAnswerById = function (id, visitorId) {
+//   return new Promise(async function (resolve, reject) {
+//     let response = await responseCollection.find({question: new ObjectId(id)}).toArray();
+//     resolve(response);
+//     console.log(response);
+//   });
+// }
 
 Post.findByAuthorId = function (authorId) {
   return Post.reuseablePostQuery([
@@ -206,6 +234,8 @@ Post.getFeed = async function (id) {
     {$sort: {createdDate: -1}}
   ]);
 }
+
+
 
 module.exports = Post;
 

@@ -3,6 +3,7 @@ const router = express.Router();
 const userController = require("./controllers/userController");
 const postController = require("./controllers/postController");
 const followController = require("./controllers/followController");
+const responseController = require("./controllers/responseController");
 
 // user related routes
 router.get("/", userController.home);
@@ -24,7 +25,11 @@ router.post(
   userController.mustBeLoggedIn,
   postController.create
 );
-router.get("/post/:id", postController.viewSingle);
+router.get(
+  "/post/:id",
+  postController.viewSingle,
+  responseController.viewResponse
+);
 router.get(
   "/post/:id/edit",
   userController.mustBeLoggedIn,
@@ -73,6 +78,13 @@ router.post(
     "/removeFollow/:username",
     userController.mustBeLoggedIn,
     followController.removeFollow
+);
+
+//answer related routes
+router.post(
+  "/:questionId/answer",
+  userController.mustBeLoggedIn,
+  responseController.answer
 );
 
 module.exports = router;

@@ -27,11 +27,18 @@ exports.create = function (req, res) {
 exports.viewSingle = async function (req, res) {
   try {
     let post = await Post.findSingleById(req.params.id, req.visitorId);
-    res.render("single-post-screen", { post: post });
+    res.render("single-post-screen", { post: post,
+      
+     });
   } catch {
     res.render("404");
   }
 };
+
+// exports.viewResponse = async function (req, res) {
+//   let answers = await Post.findAllById(req.params.id, req.visitorId);
+//   res.render("single-post-screen", { answers: answers });
+// }
 
 exports.viewEditScreen = async function (req, res) {
   try {
@@ -82,15 +89,15 @@ exports.edit = function (req, res) {
 };
 
 exports.delete = function (req, res) {
-    Post.delete(req.params.id, req.visitorId)
-        .then(() => {
-            req.flash("success", "Query successfully deleted.");
-            req.session.save(() => res.redirect(`/`));
-        })
-        .catch(() => {
-            req.flash("errors", "You do not have permission to perform that action.");
-            req.session.save(() => res.redirect("/"));
-        });
+  Post.delete(req.params.id, req.visitorId)
+    .then(() => {
+      req.flash("success", "Query successfully deleted.");
+      req.session.save(() => res.redirect(`/`));
+    })
+    .catch(() => {
+      req.flash("errors", "You do not have permission to perform that action.");
+      req.session.save(() => res.redirect("/"));
+    });
 };
 
 exports.search = function (req, res) {
@@ -102,7 +109,6 @@ exports.search = function (req, res) {
       res.json([]);
     });
 };
-
 
 // exports.trending = function (req, res) {
 //     const posts = Post.find({});

@@ -81,6 +81,7 @@
   <div class="card-header">
     <h5>Answers</h5>
   </div>
+
   <div class="card-body">
     <div class="media">
       <button id="vote-answer" class="btn vote-field mr-3">
@@ -88,19 +89,20 @@
         <span class="vote-count">0</span>
       </button>
       <div class="media-body">
-        <p>Answer Body</p>
+      
         <p class="text-muted">
           <a href="#"
             ><img class="avatar-tiny" src="<%= post.author.avatar%>"
           /></a>
-          <a href="#"><%=post.author.username%></a> on <%=
-          post.createdDate.getMonth() +1%>/<%= post.createdDate.getDate() %>/<%=
-          post.createdDate.getFullYear() %>
+          <a href="#"><%=answers.author.username%></a> on <%=
+          answers.createdDate.getMonth() +1%>/<%= answers.createdDate.getDate() %>/<%=
+          answers.createdDate.getFullYear() %>
         </p>
       </div>
     </div>
     <!-- Repeat the above code for multiple answers -->
   </div>
+
 </div>
 
 <div class="card">
@@ -108,9 +110,11 @@
     <h5>Add an Answer</h5>
   </div>
   <div class="card-body">
-    <form>
+    <form action="/<%= post._id %>/answer" method="post">
       <div class="form-group">
-        <textarea class="form-control" id="answer-body" rows="3"></textarea>
+        <textarea required
+        name="body"
+        id="response-body" class="form-control" id="answer-body" rows="3"></textarea>
       </div>
       <!-- Answer form fields -->
       <button type="submit" class="btn btn-primary">Submit</button>
