@@ -20,10 +20,27 @@ exports.answer = function (req, res) {
     });
 };
 
+exports.viewSingle = async function (req, res) {
+  try {
+    let response = await Response.findSingleById(req.params.id, req.visitorId);
+    console.log(response);
+  } catch {
+    res.render("404");
+  }
+};
+
 
 exports.viewResponse = async function (req, res) {
-  let answers = await Response.findAllById(req.params.id, req.visitorId);
-  res.render("single-post-screen", { answers: answers });
+  try {
+    let response = await Response.findAllById(req.params.id, req.visitorId);
+    console.log(response.response.length);
+    res.render("single-screen", {
+      response: response
+     });
+  }
+  catch {
+    res.render("404");
+  }
 };
 
 // exports.viewResponse = async function (req, res) {
@@ -35,7 +52,7 @@ exports.viewResponse = async function (req, res) {
 //     // res.render("single-post-screen", {
 //     //   response: response
 //     //  });
-      
+       
 //   } catch {
 //     res.render("404");
 //   }

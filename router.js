@@ -27,8 +27,9 @@ router.post(
 );
 router.get(
   "/post/:id",
-  postController.viewSingle,
-  responseController.viewResponse
+  responseController.viewResponse,
+  // postController.viewSingle,
+  
 );
 router.get(
   "/post/:id/edit",

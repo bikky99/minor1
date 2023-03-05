@@ -1,0 +1,88 @@
+<%- include('./include/header') %>
+
+<%- include('include/flash')%>
+<div class="card">
+  <div class="card-header d-flex justify-content-between">
+    <h5><%= response.title %></h5>
+  
+  </div>
+  <div class="card-body">
+    <!-- <div class="d-flex justify-content-between"> -->
+    <div class="media">
+      <button id="vote-query" class="btn vote-field mr-3">
+        <i class="fa fa-arrow-up"></i>
+        <span class="vote-count">0</span>
+      </button>
+      <div class="media-body">
+        <p><%= response.body %></p>
+        <p class="text-muted">
+          <a href="/profile/<%= response.author.username%>"
+            ><img class="avatar-tiny" src="<%= response.author.avatar%>"
+          /></a>
+          <a href="/profile/<%= response.author.username%>"
+            ><%=response.author.username%></a
+          >
+          - <%= response.createdDate.getMonth() +1%>/<%= response.createdDate.getDate()
+          %>/<%= response.createdDate.getFullYear() %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h5>Answers</h5>
+  </div>
+  <% let responses = response.response %>
+  <% if (responses.length) {%>
+  <div class="card-body">
+    <% responses.forEach(function(response) { %>
+    <div class="media">
+      <button id="vote-answer" class="btn vote-field mr-3">
+        <i class="fa fa-arrow-up"></i>
+        <span class="vote-count">0</span>
+      </button>
+
+      
+      <div class="media-body">
+        
+        <p><%= response.body %></p>
+        <p class="text-muted">
+
+          - <%= response.createdDate.getMonth() +1%>/<%= response.createdDate.getDate()
+          %>/<%= response.createdDate.getFullYear() %>
+        </p>
+        
+       
+      </div>
+    </div>
+    <% }) %>
+    
+    <!-- Repeat the above code for multiple answers -->
+  </div>
+  <% }%>
+  
+
+</div>
+
+
+
+<div class="card">
+  <div class="card-header">
+    <h5>Add an Answer</h5>
+  </div>
+  <div class="card-body">
+    <form action="/<%= response._id %>/answer" method="post">
+      <div class="form-group">
+        <textarea required
+        name="body"
+        id="response-body" class="form-control" id="answer-body" rows="3"></textarea>
+      </div>
+      <!-- Answer form fields -->
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</div>
+
+<%- include('./include/footer') %>

@@ -95,6 +95,7 @@ Post.reuseablePostQuery = function (uniqueOperations, visitorId, finalOperations
   return new Promise(async function (resolve, reject) {
     let aggOperations = uniqueOperations.concat([
       {$lookup: {from: "users", localField: "author", foreignField: "_id", as: "authorDocument"}},
+      
       {$project: {
         title: 1,
         body: 1,
@@ -136,7 +137,7 @@ Post.findSingleById = function (id, visitorId) {
       , visitorId);
     if (posts.length) {
       posts = posts[0];
-      console.log(posts);
+      // console.log(posts);
       // posts.isVisitorOwner = posts.author.equals(visitorId);
       posts.star = posts.star ? post.star : 0;
       posts.weight = posts.weight ? post.weight : 0;

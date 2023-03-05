@@ -89,15 +89,19 @@
         <span class="vote-count">0</span>
       </button>
       <div class="media-body">
-      
+        <p><%= post.body %></p>
         <p class="text-muted">
-          <a href="#"
+          <a href="/profile/<%= post.author.username%>"
             ><img class="avatar-tiny" src="<%= post.author.avatar%>"
           /></a>
-          <a href="#"><%=answers.author.username%></a> on <%=
-          answers.createdDate.getMonth() +1%>/<%= answers.createdDate.getDate() %>/<%=
-          answers.createdDate.getFullYear() %>
+          <a href="/profile/<%= post.author.username%>"
+            ><%=post.author.username%></a
+          >
+          - <%= post.createdDate.getMonth() +1%>/<%= post.createdDate.getDate()
+          %>/<%= post.createdDate.getFullYear() %>
         </p>
+      
+        
       </div>
     </div>
     <!-- Repeat the above code for multiple answers -->
