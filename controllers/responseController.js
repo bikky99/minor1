@@ -36,6 +36,7 @@ exports.viewResponse = async function (req, res) {
     let response = await Response.findAllById(req.params.id, req.visitorId);
     console.log(req.session.user.username);
     console.log(req.visitorId);
+    console.log(response);
     res.render("single-screen", {
       response: response,
       user: req.session.user,

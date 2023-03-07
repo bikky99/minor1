@@ -12,7 +12,7 @@
         <form action="/addVote/<%= response._id %>" method="post">
       <button id="vote-query" class="btn vote-field mr-3">
         <i class="fa fa-arrow-up"></i>
-        <span class="vote-count">0</span>
+        <span class="vote-count"><%= response.vote %></span>
       </button>
     </form>
       <div class="media-body">
@@ -44,7 +44,7 @@
       <form action="/voteAnswer/<%=response._id%>" method="POST">
       <button id="vote-answer" class="btn vote-field mr-3">
         <i class="fa fa-arrow-up"></i>
-        <span class="vote-count">0</span>
+        <span class="vote-count"><%= response.star %></span>
       </button>
     </form>
 

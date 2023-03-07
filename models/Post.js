@@ -20,6 +20,7 @@ Post.prototype.cleanUp = function () {
     title: this.data.title.trim(),
     body: this.data.body.trim(),
     createdDate: new Date(),
+    vote: 0,
     star: [], 
     weight: 0,
     author: ObjectId(this.userId)

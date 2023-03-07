@@ -31,18 +31,25 @@ Vote.prototype.save =  function() {
     // id: new ObjectId(this.contentId)
     // await voteCollection
     // .insertOne(this.data)
-
-    let status = await postCollection.findOne({})
-
-    await postCollection
+    let status = await voteCollection.findOne({content: this.contentId, voter: this.voterId});
+    if (status) {
+      //this.errors.push("You already voted");
+      resolve("You already voted");
+    } else {
+      await voteCollection
+      .insertOne(this.data)
+      await postCollection
       .updateOne(
         { _id: ObjectId(this.contentId)},
         {$push: { star: { voterId: this.voterId, date: new Date() }}}
       )
+      await postCollection
+      .updateOne({ _id: ObjectId(this.contentId) }, { $inc: { vote: 1 } })
       .then(() => {
         resolve('Successfully voted');
       }
       )
+    }
   });
 };
 
@@ -56,8 +63,10 @@ Vote.prototype.saveAnswerVote =  function()  {
       //this.errors.push("You already voted");
       resolve("You already voted");
     } else {
-    await voteCollection
+      await voteCollection
       .insertOne(this.data)
+    await responseCollection
+      .updateOne({ _id: ObjectId(this.contentId) }, { $inc: { star: 1 } })
       
       .then(() => {
         resolve('Successfully voted');
