@@ -1,4 +1,5 @@
 const Response = require("../models/Response");
+const Vote = require("../models/Vote");
 
 exports.answer = function (req, res) {
   let response = new Response(req.body, req.session.user._id, req.params.questionId);
@@ -33,15 +34,30 @@ exports.viewSingle = async function (req, res) {
 exports.viewResponse = async function (req, res) {
   try {
     let response = await Response.findAllById(req.params.id, req.visitorId);
-    console.log(response.response.length);
+    console.log(req.session.user.username);
+    console.log(req.visitorId);
     res.render("single-screen", {
-      response: response
+      response: response,
+      user: req.session.user,
      });
   }
   catch {
     res.render("404");
   }
 };
+
+exports.postPost = async function (req, res, next) {
+  let isVote =  false
+  if (req.session.user){
+   isVote = await Vote.isVistiorVote(req.params.id, req.visitorId)
+  }
+
+  req.isVote = isVote
+  next()
+}
+
+
+
 
 // exports.viewResponse = async function (req, res) {
 //   try {

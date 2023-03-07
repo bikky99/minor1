@@ -20,7 +20,7 @@ Post.prototype.cleanUp = function () {
     title: this.data.title.trim(),
     body: this.data.body.trim(),
     createdDate: new Date(),
-    star: 0,
+    star: [], 
     weight: 0,
     author: ObjectId(this.userId)
   }
@@ -31,7 +31,7 @@ Post.prototype.validate = function () {
     if (this.data.title == "") {this.errors.push("You must provide a title.")}
     if (this.data.body == "") {this.errors.push("You must provide post content.")}
     resolve();
-  });
+  }); 
 }
 
 Post.prototype.create = function () {

@@ -4,6 +4,7 @@ const userController = require("./controllers/userController");
 const postController = require("./controllers/postController");
 const followController = require("./controllers/followController");
 const responseController = require("./controllers/responseController");
+const voteController = require("./controllers/voteController");
 
 // user related routes
 router.get("/", userController.home);
@@ -27,6 +28,7 @@ router.post(
 );
 router.get(
   "/post/:id",
+  responseController.postPost,
   responseController.viewResponse,
   // postController.viewSingle,
   
@@ -87,5 +89,19 @@ router.post(
   userController.mustBeLoggedIn,
   responseController.answer
 );
+
+
+//vote related routes
+router.post(
+  "/addVote/:question",
+  userController.mustBeLoggedIn,
+  voteController.vote
+);
+
+router.post(
+  "/voteAnswer/:answer",
+  userController.mustBeLoggedIn,
+  voteController.voteAnswer
+)
 
 module.exports = router;
