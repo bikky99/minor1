@@ -1,0 +1,39 @@
+<%- include('./include/header') %>
+  <!-- header ends here -->
+  
+  <div class="container py-md-5 container--narrow">
+    <%- include('include/flash')%>
+    
+    <% if (posts.length) {%>
+    <h2 class="text-center">Newest Posts</h2>
+       <div class="list-group">
+    <% posts.forEach(function(post) { %>
+    <a
+      href="/post/<%= post._id %>"
+      class="list-group-item list-group-item-action mb-2 border border-secondary rounded"
+    >
+      <img class="avatar-tiny" src="<%= post.author.avatar %>" />
+      <strong><%= post.title %></strong>
+      <h5><%=post.body%></h5>
+
+      <span class="text-muted small"
+        > by <strong><%= post.author.username%> </strong>  on <%= post.createdDate.getMonth() +1%>/<%= post.createdDate.getDate()
+        %>/<%= post.createdDate.getFullYear() %></span
+      >
+    </a>
+    <% }) %>
+  </div>
+      <% } else {%>
+        <div class="text-center">
+      <h2>Hello <strong>
+        <%= user.username %>
+      </strong>, your feed is empty.</h2>
+      <p class="lead text-muted">Your feed displays the latest posts from the people you follow. If you don&rsquo;t have any friends to follow that&rsquo;s okay; you can use the &ldquo;Search&rdquo; feature in the top menu bar to find content written by people with similar interests and then follow them.</p>
+    </div> 
+      <% } %>
+
+
+  </div>
+  
+  <!-- footer begins -->
+<%- include('./include/footer') %>

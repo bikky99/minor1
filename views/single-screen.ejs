@@ -37,6 +37,7 @@
     <h5>Answers</h5>
   </div>
   <% let responses = response.response %>
+  <% responses.sort((a,b) => b.star - a.star) %>
   <% if (responses.length) {%>
   <div class="card-body">
     <% responses.forEach(function(response) { %>
@@ -53,6 +54,7 @@
         
         <p><%= response.body %></p>
         <p class="text-muted">
+          
 
           - <%= response.createdDate.getMonth() +1%>/<%= response.createdDate.getDate()
           %>/<%= response.createdDate.getFullYear() %>

@@ -48,7 +48,9 @@ Response.findAllById = function (id, visitorId) {
       // { $unwind: "$response" },
       { $lookup: { from: "users", localField: "author", foreignField: "_id", as: "author"}},
       // { $unwind: "$author" },
-
+      // { $match: { "response.author": new ObjectId(visitorId) } },
+      // { $lookup: { from: "users", localField: "response.author", foreignField: "_id", as: "response_author"}},
+      
       { $project: {
         _id: 1,
         body: 1,
@@ -58,7 +60,8 @@ Response.findAllById = function (id, visitorId) {
         title:1,
         weight: 1,
         author: { $arrayElemAt: ["$author", 0] },
-        response: 1 
+        response: 1,
+        // response_author: 1,
       }}
 
     ]).toArray();
@@ -81,6 +84,8 @@ Response.findAllById = function (id, visitorId) {
     }
   });
 }
+
+
 
 Response.findSingleById = function (id, visitorId) {
   return new Promise(async function (resolve, reject) {

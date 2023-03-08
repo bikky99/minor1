@@ -110,11 +110,12 @@ exports.search = function (req, res) {
     });
 };
 
-// exports.trending = function (req, res) {
-//     const posts = Post.find({});
-//     posts.forEach(post => {
-//         post.score = getPostScore(post);
-//     });
-//     posts.sort((a, b) => b.score - a.score);
-//     res.render("trending", { posts });
-// }
+exports.trending = function (req, res) {
+  Post.getTrending()
+    .then((posts) => {
+      res.render('trending', { posts: posts })
+    })
+    .catch(() => {
+      res.json([]);
+    });
+}

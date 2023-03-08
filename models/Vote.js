@@ -57,6 +57,7 @@ Vote.prototype.save =  function() {
 Vote.prototype.saveAnswerVote =  function()  {
   this.cleanUp();
   return new Promise(async(resolve, reject) => {
+
     console.log(this.contentId);
     let status = await voteCollection.findOne({content: this.contentId, voter: this.voterId});
     if (status) {

@@ -1,7 +1,7 @@
 <%- include('./include/header') %>
   <!-- header ends here -->
   
-  <div class="container py-md-5 container--narrow">
+  <div class="container py-md-5 container--narrow ">
     <%- include('include/flash')%>
     
     <% if (posts.length) {%>
@@ -10,13 +10,14 @@
     <% posts.forEach(function(post) { %>
     <a
       href="/post/<%= post._id %>"
-      class="list-group-item list-group-item-action"
+      class="list-group-item list-group-item-action mb-2 border-secondary rounded "
     >
       <img class="avatar-tiny" src="<%= post.author.avatar %>" />
       <strong><%= post.title %></strong>
+      <h5><%=post.body%></h5>
 
       <span class="text-muted small"
-        > by <%= post.author.username%>on <%= post.createdDate.getMonth() +1%>/<%= post.createdDate.getDate()
+        > by <strong><%= post.author.username%> </strong>  on <%= post.createdDate.getMonth() +1%>/<%= post.createdDate.getDate()
         %>/<%= post.createdDate.getFullYear() %></span
       >
     </a>

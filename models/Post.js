@@ -238,6 +238,15 @@ Post.getFeed = async function (id) {
 }
 
 
+Post.getTrending = async function () {
+  posts = Post.reuseablePostQuery([
+    {$sort: {star: -1}},
+    {$limit: 25}
+  ]);
+  
+  return posts;
+}
+
 
 module.exports = Post;
 

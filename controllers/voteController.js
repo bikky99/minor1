@@ -7,7 +7,7 @@ exports.vote = function (req, res) {
 
   vote.save().then((msg) => {
     req.flash('success', msg);
-    req.session.save(() => res.redirect('/'));
+    req.session.save(() => res.redirect('/post/' + req.params.question));
  }).catch(() => {
    req.flash('errors', 'Sorry, you already voted.');
    });

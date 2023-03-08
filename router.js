@@ -30,6 +30,7 @@ router.get(
   "/post/:id",
   responseController.postPost,
   responseController.viewResponse,
+  // responseController.findUsername,
   // postController.viewSingle,
   
 );
@@ -104,4 +105,7 @@ router.post(
   voteController.voteAnswer
 )
 
+
+//trending related routes
+router.get("/trending", postController.trending);
 module.exports = router;
