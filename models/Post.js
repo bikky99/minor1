@@ -102,6 +102,7 @@ Post.reuseablePostQuery = function (uniqueOperations, visitorId, finalOperations
         body: 1,
         createdDate: 1,
         star: 1,
+        vote: 1,
         weight: 1,
         authorId: "$author",
         author: {$arrayElemAt: ["$authorDocument", 0]},
@@ -124,6 +125,7 @@ Post.reuseablePostQuery = function (uniqueOperations, visitorId, finalOperations
     resolve(posts);
   });
 }
+
 
 Post.findSingleById = function (id, visitorId) {
   return new Promise(async function (resolve, reject) {
@@ -239,13 +241,106 @@ Post.getFeed = async function (id) {
 
 
 Post.getTrending = async function () {
-  posts = Post.reuseablePostQuery([
-    {$sort: {star: -1}},
+  posts = Post.reuseableTrendQuery([
+    {$sort: {weight: -1}},
     {$limit: 25}
   ]);
-  
   return posts;
+
 }
+
+
+Post.reuseableTrendQuery = function (uniqueOperations, visitorId, finalOperations=[]) {
+  return new Promise(async function (resolve, reject) {
+    let aggOperations = uniqueOperations.concat([
+      {$lookup: {from: "users", localField: "author", foreignField: "_id", as: "authorDocument"}},
+      
+      {$project: {
+        title: 1,
+        body: 1,
+        createdDate: 1,
+        star: 1,
+        vote: 1,
+        weight: 1,
+        authorId: "$author",
+        author: {$arrayElemAt: ["$authorDocument", 0]},
+      }}
+    ]).concat(finalOperations);
+
+    let posts = await postsCollection.aggregate(aggOperations).toArray();
+
+    // clean up author property in each post object
+    posts = posts.map(function (post) {
+      post.isVisitorOwner = post.authorId.equals(visitorId);
+      post.authorId = undefined;
+      post.author = {
+        username: post.author.username,
+        avatar: new User(post.author, true).avatar
+      }
+      return post;
+    });
+
+    // posts = Object.entries(posts)
+    // console.log(posts);
+
+    // console.log(Object.keys(posts));
+
+    posts.forEach(async function (postObj) {
+      // let weight = postObj.star.forEach( (starObj) => {
+      //   let weight = 0;
+      //   let starCreatedDate = new Date(starObj.date);
+      //     const documentDate = starCreatedDate
+      //       const currentDate = new Date();
+      //       const differenceMs = currentDate.getTime() - documentDate.getTime();
+      //       const differenceDays = Math.floor(differenceMs / 86400000); // days
+      //       // console.log(differenceDays);
+      //       const number = 2
+      //        const ln = Math.log(number)
+      //        const lamda = ln/2;
+      //        const value = Math.pow(Math.E, -( differenceDays) * lamda)
+      //        weight = weight + value;
+             
+      //       return weight;
+      //        console.log(weight);
+        
+      //   // console.log((starCreatedDate));
+      // })
+
+      let weight = 0;
+for (const starObj of postObj.star) {
+  const starCreatedDate = new Date(starObj.date);
+  const documentDate = starCreatedDate;
+  const currentDate = new Date();
+  const differenceMs = currentDate.getTime() - documentDate.getTime();
+  const differenceDays = Math.floor(differenceMs / 86400000); // days
+  const number = 2;
+  const ln = Math.log(number);
+  const lamda = ln / 2;
+  const value = Math.pow(Math.E, -differenceDays * lamda);
+  weight += value;
+}
+
+// Update the post document in the database with the new weight value
+const postId = postObj._id;
+await postsCollection.updateOne({ _id: postId }, { $set: { weight: weight } });
+
+      
+      // console.log(weight);
+      // await postsCollection.updateOne({_id: new ObjectId(postObj._id)}, {$set: {weight: weight}});
+    });
+    resolve(posts);
+  });
+}
+
+Post.giveWeightValue = function (createdDate) {
+  const number = 2
+  const ln = Math.log(number)
+  const lamda = 3
+  const weight = Math.pow(Math.E, -( Date.now() - createdDate) * lamda)
+  return weight
+}
+
+
 
 
 module.exports = Post;

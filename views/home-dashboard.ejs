@@ -14,12 +14,15 @@
     >
       <img class="avatar-tiny" src="<%= post.author.avatar %>" />
       <strong><%= post.title %></strong>
-      <h5><%=post.body%></h5>
-
+      <h6 class="pt-2"><%=post.body%></h6>
+      
+      
       <span class="text-muted small"
-        > by <strong><%= post.author.username%> </strong>  on <%= post.createdDate.getMonth() +1%>/<%= post.createdDate.getDate()
+        > By <strong><%= post.author.username%> </strong>  on <%= post.createdDate.getMonth() +1%>/<%= post.createdDate.getDate()
         %>/<%= post.createdDate.getFullYear() %></span
       >
+      <br>
+      <strong>Total Vote Count: <%= post.vote%></strong>
     </a>
     <% }) %>
   </div>
