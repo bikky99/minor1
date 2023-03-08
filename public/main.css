@@ -396,3 +396,26 @@ textarea.tall-textarea {
     background-image: linear-gradient(90deg, #89eada 0%, #175261 100%);
 
 }
+/* .body-side{
+    background-image: linear-gradient(90deg, #b7cfcc 0%, #175261 100%);
+
+} */
+
+.littleDark{
+    background-image: linear-gradient(90deg, #e1eff0 0%, #f1e2e2 100%);
+
+}
+.littleDark1{
+    background-image: linear-gradient(90deg, #fbfcfc 0%, #c9e3e2 100%);
+
+}
+.titleDark{
+    background-image: linear-gradient(90deg, #dde6e6 0%, #6f7878 100%);
+
+}
+
+.littleDark:hover{
+    background-image: linear-gradient(90deg, #c4d1d1 0%, #d9c6c6 100%);
+    color: #000;
+}
+

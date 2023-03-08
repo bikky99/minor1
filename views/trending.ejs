@@ -1,16 +1,16 @@
 <%- include('./include/header') %>
   <!-- header ends here -->
-  
-  <div class="container trending py-md-5 container--narrow">
+  <div class="body-side trending">
+  <div class="container  py-md-2 container">
     <%- include('include/flash')%>
     
     <% if (posts.length) {%>
     <h2 class="text-center text-dark">Trending Queries</h2>
-       <div class="list-group">
+       <div class="list-group ">
     <% posts.forEach(function(post) { %>
     <a
       href="/post/<%= post._id %>"
-      class="list-group-item list-group-item-action mb-2 border border-secondary rounded"
+      class="list-group-item littleDark list-group-item-action mb-2 border border-secondary rounded"
     >
     
       <img class="avatar-tiny" src="<%= post.author.avatar %>" />
@@ -38,6 +38,7 @@
 
 
   </div>
+</div>
   
   <!-- footer begins -->
 <%- include('./include/footer') %>
