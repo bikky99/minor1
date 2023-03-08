@@ -1,12 +1,12 @@
 <%- include('./include/header') %>
 
 <%- include('include/flash')%>
-<div class="card">
-  <div class="card-header d-flex justify-content-between">
+<div class="card ml-3 mr-3 mb-2 border ">
+  <div class="card-header d-flex text-light justify-content-between bg-secondary">
     <h5><%= response.title %></h5>
   
   </div>
-  <div class="card-body">
+  <div class="card-body ">
     <!-- <div class="d-flex justify-content-between"> -->
     <div class="media">
         <form action="/addVote/<%= response._id %>" method="post">
@@ -32,8 +32,8 @@
   </div>
 </div>
 
-<div class="card">
-  <div class="card-header">
+<div class="card ml-3 mr-3 mb-2">
+  <div class="card-header ">
     <h5>Answers</h5>
   </div>
   <% let responses = response.response %>
@@ -41,7 +41,7 @@
   <% if (responses.length) {%>
   <div class="card-body">
     <% responses.forEach(function(response) { %>
-    <div class="media">
+    <div class="media bg-light mb-2">
       <form action="/voteAnswer/<%=response._id%>" method="POST">
       <button id="vote-answer" class="btn vote-field mr-3">
         <i class="fa fa-arrow-up"></i>
@@ -60,7 +60,7 @@
           %>/<%= response.createdDate.getFullYear() %>
         </p>
         
-       
+       <hr>
       </div>
     </div>
     <% }) %>
@@ -74,7 +74,7 @@
 
 
 
-<div class="card">
+<div class="card ml-3 mr-3 ">
   <div class="card-header">
     <h5>Add an Answer</h5>
   </div>

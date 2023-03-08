@@ -387,3 +387,12 @@ textarea.tall-textarea {
     outline: none;
     font-size: .75rem;
 }
+
+.header-bar{
+    background-image: linear-gradient(90deg, #459b8d 0%, #0e1213 100%);
+}
+
+.trending{
+    background-image: linear-gradient(90deg, #89eada 0%, #175261 100%);
+
+}
