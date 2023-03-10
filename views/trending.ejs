@@ -5,7 +5,7 @@
     <%- include('include/flash')%>
     
     <% if (posts.length) {%>
-    <h2 class="text-center text-dark">Trending Queries</h2>
+    <h2 class="text-center text-dark hometitle">Trending Queries</h2>
        <div class="list-group ">
     <% posts.forEach(function(post) { %>
     <a
@@ -14,7 +14,7 @@
     >
     
       <img class="avatar-tiny" src="<%= post.author.avatar %>" />
-      <strong><%= post.title %></strong>
+      <strong class="display-5"><%= post.title %></strong>
       <h5><%=post.body%></h5>
       
       
@@ -23,7 +23,7 @@
         %>/<%= post.createdDate.getFullYear() %></span
       >
       <br>
-      <strong>Total Vote Count: <%= post.vote%></strong>
+      <strong class="mark">Total Vote Count: <%= post.vote%></strong>
     </a>
     <% }) %>
   </div>

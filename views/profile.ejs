@@ -1,5 +1,6 @@
 <%- include('./include/header') %>
-<div class="">
+<div class="titleDark>
+<div class="titleDark">
 <div class="container py-md-5 container ">
   <%- include('include/flash')%>
   <%- include('include/profileShared')%>
@@ -9,7 +10,7 @@
     <% posts.forEach(function(post) { %>
     <a
       href="/post/<%= post._id %>"
-      class="list-group-item list-group-item-action littleDark"
+      class="list-group-item list-group-item-action mb-2 littleDark"
     >
       <img class="avatar-tiny" src="<%= post.author.avatar %>" />
       <strong><%= post.title %></strong>

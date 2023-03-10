@@ -9,7 +9,7 @@
     <% following.forEach(function(followedUser) { %>
     <a
       href="/profile/<%= followedUser.username %>"
-      class="list-group-item list-group-item-action littleDark"
+      class="list-group-item mb-1 list-group-item-action littleDark"
     >
       <img class="avatar-tiny" src="<%= followedUser.avatar %>" />
       <%= followedUser.username %>

@@ -1,3 +1,4 @@
+ <div class="titleDark pl-2 pt-2">
  <h2>
     <img class="avatar-small" src="<%= profileAvatar %>" /> <%= profileUsername
     %> <% if(user && !isVisitorsProfile) {%> <% if (isFollowing) {%>
@@ -31,3 +32,4 @@
     >
     <a href="/profile/<%= profileUsername%>/following" class="profile-nav-link nav-item nav-link <%= currentPage == 'following' ? 'active' : ''%>">Following: <%= counts.followingCount%></a>
   </div>
+</div>

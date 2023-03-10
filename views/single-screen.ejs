@@ -1,21 +1,22 @@
 <%- include('./include/header') %>
 
 <%- include('include/flash')%>
-<div class="card ml-3 mr-3 mb-2 border ">
+<div class="titleDark">
+<div class="card border ">
   <div class="card-header d-flex text-dark justify-content-between titleDark">
     <h5><%= response.title %></h5>
   
   </div>
-  <div class="card-body littleDark1">
+  <div class="media-body  littleDark1">
     <!-- <div class="d-flex justify-content-between"> -->
-    <div class="media littleDark">
+    <div class="media ml-2 littleDark">
         <form action="/addVote/<%= response._id %>" method="post">
       <button id="vote-query" class="btn vote-field mr-3">
         <i class="fa fa-arrow-up"></i>
         <span class="vote-count"><%= response.vote %></span>
       </button>
     </form>
-      <div class="media-body ">
+      <div class="media-body mt-1 mb-2">
         <p><%= response.body %></p>
         <p class="text-muted">
           <a href="/profile/<%= response.author.username%>"
@@ -40,7 +41,7 @@
   <% responses.sort((a,b) => b.star - a.star) %>
   <% if (responses.length) {%>
     <div class="littleDark1">
-  <div class="card-body ">
+  <div class="media-body ">
     <% responses.forEach(function(response) { %>
     <div class="media bg-light mb-2 littleDark ">
       <form action="/voteAnswer/<%=response._id%>" method="POST">
@@ -51,7 +52,7 @@
     </form>
 
       
-      <div class="media-body">
+      <div class="media-body mt-2 mt-3">
         
         <p><%= response.body %></p>
         <p class="text-muted">
@@ -82,7 +83,7 @@
   <div class="card-header d-flex text-dark justify-content-between titleDark">
     <h5>Add an Answer</h5>
   </div>
-  <div class="card-body">
+  <div class="card-body ">
     <form action="/<%= response._id %>/answer" method="post">
       <div class="form-group">
         <textarea required
@@ -93,6 +94,7 @@
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   </div>
+</div>
 </div>
 
 <%- include('./include/footer') %>
