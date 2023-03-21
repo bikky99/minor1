@@ -47,7 +47,7 @@
       <form action="/voteAnswer/<%=response._id%>" method="POST">
       <button id="vote-answer" class="btn vote-field mr-3">
         <i class="fa fa-arrow-up"></i>
-        <span class="vote-count"><%= response.star %></span>
+        <span class="vote-count"><%= response.star %> </span>
       </button>
     </form>
 
@@ -56,9 +56,10 @@
         
         <p><%= response.body %></p>
         <p class="text-muted">
-          
 
-          - <%= response.createdDate.getMonth() +1%>/<%= response.createdDate.getDate()
+          <i class='fa fa-user'></i>
+
+          <a href="/profile/<%= response.author_username%>"><%= response.author_username %></a> - <%= response.createdDate.getMonth() +1%>/<%= response.createdDate.getDate()
           %>/<%= response.createdDate.getFullYear() %>
         </p>
         

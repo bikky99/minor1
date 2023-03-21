@@ -36,6 +36,119 @@ Response.prototype.validate = function () {
   });
 };
 
+// Response.findUsername = function (id, visitorId) {
+//   return new Promise(async function (resolve, reject) {
+//     if (typeof id!= "string" ||!ObjectId.isValid(id)) {
+//       reject();
+//       return;
+//     }
+//     let responses = await postsCollection.aggregate([
+//       // { $match: { _id: new ObjectId(id) }},
+//       // { $lookup: { from: "response", localField: "_id", foreignField: "question", as: "response"}},
+//       // { $unwind: "$response" },
+//       // { $lookup: { from: "users", localField: "author", foreignField: "_id", as: "author"}},
+//       // { $unwind: "$author" },
+//       { $match: { "response.author": new ObjectId(visitorId) } },
+//       { $lookup: { from: "users", localField: "response.author", foreignField: "_id", as: "response_author"}},
+      
+//       { $project: {
+//         _id: 1,
+//         body: 1,
+//         createdDate: 1,
+//         star: 1,
+//         vote: 1,
+//         title: 1,
+//         weight: 1,
+//         author: { $arrayElemAt: ["$author", 0] },
+//         response: 1,
+//         response_author: 1,
+//       }}
+
+//     ]).toArray();
+//     // clean up author property in each post object
+
+//     responses = responses.map(function (response) {
+//       response.author = {
+//         username: response.author.username,
+//         avatar: new User(response.author, true).avatar,
+//       };
+//       return response;
+//     });
+
+//     if (responses.length ) {
+//       // console.log(responses[0]); 
+//       responses =responses[0]
+
+//       resolve(responses); 
+//     } else {
+//       reject();
+//     }
+//   });
+// }
+
+// Response.findAllById = function (id, visitorId) {
+//   return new Promise(async function (resolve, reject) {
+//     if (typeof id!= "string" ||!ObjectId.isValid(id)) {
+//       reject();
+//       return;
+//     }
+//     let responses = await postsCollection.aggregate([
+//       { $match: { _id: new ObjectId(id) }},
+//       { $lookup: { from: "response", localField: "_id", foreignField: "question", as: "response"}},
+//       { $lookup: { from: "users", localField: "author", foreignField: "_id", as: "author"}},
+//       { $lookup: { from: "users", localField: "response.author", foreignField: "_id", as: "response_author"}},
+//       { $project: {
+//         _id: 1,
+//         body: 1,
+//         createdDate: 1,
+//         star: 1,
+//         vote: 1,
+//         title: 1,
+//         weight: 1,
+//         author: { $arrayElemAt: ["$author", 0] },
+//         response: {
+//           $map: {
+//             input: "$response",
+//             as: "r",
+//             in: {
+//               _id: "$$r._id",
+//               body: "$$r.body",
+//               createdDate: "$$r.createdDate",
+//               question: "$$r.question",
+//               star: "$$r.star",
+//               author: "$$r.author",
+//               author_username: {
+//                 $let: {
+//                   vars: {
+//                     response_author: { $arrayElemAt: ["$response_author", { $indexOfArray: ["$response._id", "$$r._id"] }] }
+//                   },
+//                   in: "$$response_author.username"
+//                 }
+//               }
+//             }
+//           }
+//         }
+//       }}
+//     ]).toArray();
+
+//     // clean up author property in each post object
+//     responses = responses.map(function (response) {
+//       response.author = {
+//         username: response.author.username,
+//         avatar: new User(response.author, true).avatar,
+//       };
+//       return response;
+//     });
+
+//     if (responses.length) {
+//       responses = responses[0];
+//       resolve(responses); 
+//     } else {
+//       reject();
+//     }
+//   });
+// }
+
 Response.findAllById = function (id, visitorId) {
   return new Promise(async function (resolve, reject) {
     if (typeof id!= "string" ||!ObjectId.isValid(id)) {
@@ -45,12 +158,8 @@ Response.findAllById = function (id, visitorId) {
     let responses = await postsCollection.aggregate([
       { $match: { _id: new ObjectId(id) }},
       { $lookup: { from: "response", localField: "_id", foreignField: "question", as: "response"}},
-      // { $unwind: "$response" },
       { $lookup: { from: "users", localField: "author", foreignField: "_id", as: "author"}},
-      // { $unwind: "$author" },
-      // { $match: { "response.author": new ObjectId(visitorId) } },
-      // { $lookup: { from: "users", localField: "response.author", foreignField: "_id", as: "response_author"}},
-      
+      { $lookup: { from: "users", localField: "response.author", foreignField: "_id", as: "response_author"}},
       { $project: {
         _id: 1,
         body: 1,
@@ -60,13 +169,31 @@ Response.findAllById = function (id, visitorId) {
         title: 1,
         weight: 1,
         author: { $arrayElemAt: ["$author", 0] },
-        response: 1,
-        // response_author: 1,
+        response: {
+          $map: {
+            input: "$response",
+            as: "r",
+            in: {
+              _id: "$$r._id",
+              body: "$$r.body",
+              createdDate: "$$r.createdDate",
+              question: "$$r.question",
+              author: "$$r.author",
+              author_username: {
+                $let: {
+                  vars: {
+                    response_author: { $arrayElemAt: ["$response_author", { $indexOfArray: ["$response.author", "$$r.author"] }] }
+                  },
+                  in: "$$response_author.username"
+                }
+              }
+            }
+          }
+        }
       }}
-
     ]).toArray();
-    // clean up author property in each post object
 
+    // clean up author property in each post object
     responses = responses.map(function (response) {
       response.author = {
         username: response.author.username,
@@ -75,15 +202,68 @@ Response.findAllById = function (id, visitorId) {
       return response;
     });
 
-    if (responses.length ) {
-      // console.log(responses[0]); 
-      responses =responses[0]
+    if (responses.length) {
+      responses = responses[0];
       resolve(responses); 
     } else {
       reject();
     }
   });
 }
+
+
+
+
+
+
+// Response.findAllById = function (id, visitorId) {
+//   return new Promise(async function (resolve, reject) {
+//     if (typeof id!= "string" ||!ObjectId.isValid(id)) {
+//       reject();
+//       return;
+//     }
+//     let responses = await postsCollection.aggregate([
+//       { $match: { _id: new ObjectId(id) }},
+//       { $lookup: { from: "response", localField: "_id", foreignField: "question", as: "response"}},
+//       // { $unwind: "$response" },
+//       { $lookup: { from: "users", localField: "author", foreignField: "_id", as: "author"}},
+//       // { $unwind: "$author" },
+//       // { $match: { "response.author": new ObjectId(visitorId) } },
+//       { $lookup: { from: "users", localField: "response.author", foreignField: "_id", as: "response_author"}},
+      
+//       { $project: {
+//         _id: 1,
+//         body: 1,
+//         createdDate: 1,
+//         star: 1,
+//         vote: 1,
+//         title: 1,
+//         weight: 1,
+//         author: { $arrayElemAt: ["$author", 0] },
+//         response: 1,
+//         response_author: { $arrayElemAt: ["$response_author", 0]}
+//       }}
+
+//     ]).toArray();
+//     // clean up author property in each post object
+
+//     responses = responses.map(function (response) {
+//       response.author = {
+//         username: response.author.username,
+//         avatar: new User(response.author, true).avatar,
+//       };
+//       return response;
+//     });
+
+//     if (responses.length ) {
+//       // console.log(responses[0]); 
+//       responses =responses[0]
+//       resolve(responses); 
+//     } else {
+//       reject();
+//     }
+//   });
+// }
 
 
 

@@ -45,7 +45,19 @@ exports.viewResponse = async function (req, res) {
   catch {
     res.render("404");
   }
+  // next();
 };
+
+// exports.findUsername =async function(req, res) {
+//   try {
+//       let username = await Response.findUsername(req, res)
+//       res.render("single-screen", { username: response_author})
+//   } catch (error) {
+//     console.log(error);
+//     res.render("404");
+    
+//   }
+// }
 
 exports.postPost = async function (req, res, next) {
   let isVote =  false
