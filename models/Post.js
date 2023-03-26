@@ -313,7 +313,7 @@ for (const starObj of postObj.star) {
   const currentDate = new Date();
   const differenceMs = currentDate.getTime() - documentDate.getTime();
   const differenceDays = Math.floor(differenceMs / 86400000); // days
-  const number = 7;
+  const number = 30;
   const ln = Math.log(number);
   const lamda = ln / 2;
   const value = Math.pow(Math.E, -differenceDays * lamda);

@@ -1,22 +1,23 @@
 <%- include('./include/header') %>
 
 <%- include('include/flash')%>
-<div class="titleDark">
-<div class="card border ">
+<div class="titleDark border container  mt-3 border rounded">
+  <div>
+  <div class="card ">
   <div class="card-header d-flex text-dark justify-content-between titleDark">
     <h5><%= response.title %></h5>
   
   </div>
-  <div class="media-body  littleDark1">
+  <div class="media-body littleDark1 ">
     <!-- <div class="d-flex justify-content-between"> -->
-    <div class="media ml-2 littleDark">
+    <div class="media littleDark">
         <form action="/addVote/<%= response._id %>" method="post">
-      <button id="vote-query" class="btn vote-field mr-3">
+      <button id="vote-query" class="btn vote-field ">
         <i class="fa fa-arrow-up"></i>
         <span class="vote-count"><%= response.vote %></span>
       </button>
     </form>
-      <div class="media-body mt-1 mb-2">
+      <div class="media-body ml-3 mt-1 mb-2">
         <p><%= response.body %></p>
         <p class="text-muted">
           <a href="/profile/<%= response.author.username%>"
@@ -33,7 +34,7 @@
   </div>
 </div>
 
-<div class="card ml-3 mr-3 mb-2">
+<div class="card  mb-2">
   <div class="card-header d-flex text-dark justify-content-between titleDark">
     <h5>Answers</h5>
   </div>
@@ -43,23 +44,24 @@
     <div class="littleDark1">
   <div class="media-body ">
     <% responses.forEach(function(response) { %>
-    <div class="media bg-light mb-2 littleDark ">
+    <div class="media bg-light  littleDark ">
       <form action="/voteAnswer/<%=response._id%>" method="POST">
       <button id="vote-answer" class="btn vote-field mr-3">
         <i class="fa fa-arrow-up"></i>
-        <span class="vote-count"><%= response.star %> </span>
+        <span class="vote-count"><%= response.star %></span>
       </button>
     </form>
 
       
-      <div class="media-body mt-2 mt-3">
+      <div class="media-body">
         
         <p><%= response.body %></p>
         <p class="text-muted">
-
-          <i class='fa fa-user'></i>
-
-          <a href="/profile/<%= response.author_username%>"><%= response.author_username %></a> - <%= response.createdDate.getMonth() +1%>/<%= response.createdDate.getDate()
+          
+           <i class="fas fa-user-alt"> </i> <a href="/profile/<%= response.author_username%>"
+            ><%=response.author_username%></a
+          >
+          - <%= response.createdDate.getMonth() +1%>/<%= response.createdDate.getDate()
           %>/<%= response.createdDate.getFullYear() %>
         </p>
         
@@ -95,6 +97,7 @@
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   </div>
+</div>
 </div>
 </div>
 

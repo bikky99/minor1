@@ -179,6 +179,7 @@ Response.findAllById = function (id, visitorId) {
               createdDate: "$$r.createdDate",
               question: "$$r.question",
               author: "$$r.author",
+              star: "$$r.star",
               author_username: {
                 $let: {
                   vars: {
@@ -211,6 +212,30 @@ Response.findAllById = function (id, visitorId) {
   });
 }
 
+
+Response.sort=(star1, star2) => {
+  let results =[];
+  let i =0;
+  let j = 0;
+  while(i < star1.length && j < star2.length){ if(star2[j] > star1[i]){
+    results.push(star1[i]);
+    i++;
+    }else{
+    results.push(star2[j])
+    j++;
+    }
+    }
+    while( i < star1.length ){
+    results.push(star1[i])
+    i++;
+    }
+    while(j < star2.length){
+    results.push(star2[j])
+    j++;
+    }
+  return results
+  }
+  
 
 
 
